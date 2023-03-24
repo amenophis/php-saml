@@ -150,6 +150,21 @@ REQUESTEDAUTHN;
         $spEntityId = htmlspecialchars($spData['entityId'], ENT_QUOTES);
         $acsUrl = htmlspecialchars($spData['assertionConsumerService']['url'], ENT_QUOTES);
         $destination = $this->_settings->getIdPSSOUrl();
+//        $request = <<<AUTHNREQUEST
+//<samlp:AuthnRequest
+//    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+//    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+//    ID="$id"
+//    Version="2.0"
+//{$providerNameStr}{$forceAuthnStr}{$isPassiveStr}
+//    IssueInstant="{$issueInstant}"
+//    Destination="{$destination}"
+//    ProtocolBinding="{$spData['assertionConsumerService']['binding']}"
+//    AssertionConsumerServiceURL="{$acsUrl}">
+//    <saml:Issuer>{$spEntityId}</saml:Issuer>{$subjectStr}{$nameIdPolicyStr}{$requestedAuthnStr}
+//</samlp:AuthnRequest>
+//AUTHNREQUEST;
+
         $request = <<<AUTHNREQUEST
 <samlp:AuthnRequest
     xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
@@ -159,8 +174,8 @@ REQUESTEDAUTHN;
 {$providerNameStr}{$forceAuthnStr}{$isPassiveStr}
     IssueInstant="{$issueInstant}"
     Destination="{$destination}"
-    ProtocolBinding="{$spData['assertionConsumerService']['binding']}"
-    AssertionConsumerServiceURL="{$acsUrl}">
+    AssertionConsumerServiceIndex="0"
+    AttributeConsumingServiceIndex="0">
     <saml:Issuer>{$spEntityId}</saml:Issuer>{$subjectStr}{$nameIdPolicyStr}{$requestedAuthnStr}
 </samlp:AuthnRequest>
 AUTHNREQUEST;

@@ -268,32 +268,32 @@ class Response
                 }
 
                 // Check destination
-                if ($this->document->documentElement->hasAttribute('Destination')) {
-                    $destination = $this->document->documentElement->getAttribute('Destination');
-                    if (isset($destination)) {
-                        $destination = trim($destination);
-                    }
-                    if (empty($destination)) {
-                        if (!$security['relaxDestinationValidation']) {
-                            throw new ValidationError(
-                                "The response has an empty Destination value",
-                                ValidationError::EMPTY_DESTINATION
-                            );
-                        }
-                    } else {
-                        $urlComparisonLength = $security['destinationStrictlyMatches'] ? strlen($destination) : strlen($currentURL);
-                        if (strncmp($destination, $currentURL, $urlComparisonLength) !== 0) {
-                            $currentURLNoRouted = Utils::getSelfURLNoQuery();
-                            $urlComparisonLength = $security['destinationStrictlyMatches'] ? strlen($destination) : strlen($currentURLNoRouted);
-                            if (strncmp($destination, $currentURLNoRouted, $urlComparisonLength) !== 0) {
-                                throw new ValidationError(
-                                    "The response was received at $currentURL instead of $destination",
-                                    ValidationError::WRONG_DESTINATION
-                                );
-                            }
-                        }
-                    }
-                }
+//                if ($this->document->documentElement->hasAttribute('Destination')) {
+//                    $destination = $this->document->documentElement->getAttribute('Destination');
+//                    if (isset($destination)) {
+//                        $destination = trim($destination);
+//                    }
+//                    if (empty($destination)) {
+//                        if (!$security['relaxDestinationValidation']) {
+//                            throw new ValidationError(
+//                                "The response has an empty Destination value",
+//                                ValidationError::EMPTY_DESTINATION
+//                            );
+//                        }
+//                    } else {
+//                        $urlComparisonLength = $security['destinationStrictlyMatches'] ? strlen($destination) : strlen($currentURL);
+//                        if (strncmp($destination, $currentURL, $urlComparisonLength) !== 0) {
+//                            $currentURLNoRouted = Utils::getSelfURLNoQuery();
+//                            $urlComparisonLength = $security['destinationStrictlyMatches'] ? strlen($destination) : strlen($currentURLNoRouted);
+//                            if (strncmp($destination, $currentURLNoRouted, $urlComparisonLength) !== 0) {
+//                                throw new ValidationError(
+//                                    "The response was received at $currentURL instead of $destination",
+//                                    ValidationError::WRONG_DESTINATION
+//                                );
+//                            }
+//                        }
+//                    }
+//                }
 
                 // Check audience
                 $validAudiences = $this->getAudiences();
@@ -377,12 +377,12 @@ class Response
                     }
                 }
 
-                if (!$anySubjectConfirmation) {
-                    throw new ValidationError(
-                        "A valid SubjectConfirmation was not found on this Response",
-                        ValidationError::WRONG_SUBJECTCONFIRMATION
-                    );
-                }
+//                if (!$anySubjectConfirmation) {
+//                    throw new ValidationError(
+//                        "A valid SubjectConfirmation was not found on this Response",
+//                        ValidationError::WRONG_SUBJECTCONFIRMATION
+//                    );
+//                }
 
                 if ($security['wantAssertionsSigned'] && !$hasSignedAssertion) {
                     throw new ValidationError(

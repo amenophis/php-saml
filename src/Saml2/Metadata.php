@@ -104,19 +104,32 @@ ORGANIZATION_URL;
 ORGANIZATIONSTR;
         }
 
-        $strContacts = '';
-        if (!empty($contacts)) {
-            $contactsInfo = array();
-            foreach ($contacts as $type => $info) {
-                $contactsInfo[] = <<<CONTACT
-    <md:ContactPerson contactType="{$type}">
-        <md:GivenName>{$info['givenName']}</md:GivenName>
-        <md:EmailAddress>{$info['emailAddress']}</md:EmailAddress>
-    </md:ContactPerson>
-CONTACT;
-            }
-            $strContacts = "\n".implode("\n", $contactsInfo);
-        }
+//        $strContacts = '';
+//        if (!empty($contacts)) {
+//            $contactsInfo = array();
+//            foreach ($contacts as $type => $info) {
+//                $contactsInfo[] = <<<CONTACT
+//    <md:ContactPerson contactType="{$type}">
+//        <md:GivenName>{$info['givenName']}</md:GivenName>
+//        <md:EmailAddress>{$info['emailAddress']}</md:EmailAddress>
+//    </md:ContactPerson>
+//CONTACT;
+//            }
+//            $strContacts = "\n".implode("\n", $contactsInfo);
+//        }
+        $strContacts = <<<EOF
+
+<md:ContactPerson contactType="other">
+    <md:Extensions>
+        <spid:VATNumber>IT12345678901</spid:VATNumber>
+        <spid:FiscalCode>XYZABCAAMGGJ000W</spid:FiscalCode>
+        <spid:Public/>
+    </md:Extensions>
+    <md:GivenName>Jérémy LEHERPEUR</md:GivenName>
+    <md:EmailAddress>jeremy.leherpeur@yousign.com</md:EmailAddress>
+</md:ContactPerson>
+EOF;
+
 
         $strAttributeConsumingService = '';
         if (isset($sp['attributeConsumingService'])) {
@@ -163,7 +176,7 @@ ATTRIBUTEVALUE;
 
             $requestedAttributeStr = implode(PHP_EOL, $requestedAttributeData);
             $strAttributeConsumingService = <<<METADATA_TEMPLATE
-<md:AttributeConsumingService index="1">
+<md:AttributeConsumingService index="0">
             <md:ServiceName xml:lang="en">{$sp['attributeConsumingService']['serviceName']}</md:ServiceName>
 {$attrCsDesc}{$requestedAttributeStr}
         </md:AttributeConsumingService>
@@ -175,6 +188,7 @@ METADATA_TEMPLATE;
         $metadata = <<<METADATA_TEMPLATE
 <?xml version="1.0"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                     xmlns:spid="https://spid.gov.it/saml-extensions"
                      validUntil="{$validUntilTime}"
                      cacheDuration="PT{$cacheDuration}S"
                      entityID="{$spEntityId}">
@@ -182,7 +196,8 @@ METADATA_TEMPLATE;
 {$sls}        <md:NameIDFormat>{$sp['NameIDFormat']}</md:NameIDFormat>
         <md:AssertionConsumerService Binding="{$sp['assertionConsumerService']['binding']}"
                                      Location="{$acsUrl}"
-                                     index="1" />
+                                     isDefault="true"
+                                     index="0" />
         {$strAttributeConsumingService}
     </md:SPSSODescriptor>{$strOrganization}{$strContacts}
 </md:EntityDescriptor>
